@@ -1,0 +1,19 @@
+{% load i18n %}
+
+{% if perms.product_extensions.view %}
+<li class="side-nav-section">
+  <p>
+    {% trans "Product Extensions" context "Dashboard product extensions list" %}
+  </p>
+  <ul>
+      {% if perms.product_extensions.vew %}
+        <li class="{% block menu_product_extensions_class %}{% endblock %}">
+          <a href="{% url 'product-extension-dashboard-list' %}">
+            {% trans "Products" context "Dashboard product extensions list" %}
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+</li>
+{% endif %}
+

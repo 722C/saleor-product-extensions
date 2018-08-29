@@ -1,0 +1,78 @@
+{% extends "dashboard/base.html" %}
+{% load i18n %}
+{% load materializecss %}
+{% load staticfiles %}
+{% load utils %}
+
+{% block title %}
+  {% trans "Product Extensions" context "Dashboard product extensions list" %} - {{ block.super }}
+{% endblock %}
+
+{% block body_class %}body-customers{% endblock %}
+
+{% block menu_product_extensions_class %}active{% endblock %}
+
+{% block header_extra %}
+  {% if perms.product_extensions.edit %}
+    <div class="btn-fab-fixed">
+      <a href="{% url 'product-extension-dashboard-create' %}" class="btn-fab-default waves-effect waves-light" title="{% trans "Add product extension" context "Product extension list add button text" %}">
+        <svg data-src="{% static "dashboard/images/add.svg" %}" />
+      </a>
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block breadcrumbs %}
+  <ul class="breadcrumbs">
+    <li class="visible-s">
+      {% trans "Product Extensions" context "Dashboard product extensions list" %}
+    </li>
+  </ul>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col s12 l9">
+      {% if product_extensions %}
+        <div class="card">
+          <div class="data-table-container">
+            <table class="bordered highlight data-table data-table-description">
+              <thead>
+                <tr>
+                  {% trans "Name" context "Dashboard product extensions list table header name" as label %}
+                  {% sorting_header 'name' label %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for product_extension in product_extensions %}
+                  <tr data-action-go="{% if perms.product_extensions.edit %}{% url 'product-extension-dashboard-detail' pk=product_extension.pk %}{% endif %}">
+                    <td>
+                      {{ product_extension }}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {% paginate product_extensions %}
+      {% else %}
+        {% if is_empty %}
+          {% include 'product_extensions/dashboard/zero_page.html' %}
+        {% else %}
+          <div class="col s12">
+            <div class="not-found">
+              <p class="grey-text">
+                {% trans "No product extensions found." context "Empty product extensions table message" %}
+              </p>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+    <div class="col s12 l3" id="filters">
+      {% if not is_empty %}{% filters filter_set %}{% endif %}
+    </div>
+  </div>
+{% endblock %}
+
