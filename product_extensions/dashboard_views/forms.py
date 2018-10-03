@@ -11,8 +11,6 @@ class ProductExtensionForm(forms.ModelForm):
     product = forms.ModelChoiceField(
         queryset=Product.objects.all())
 
-    content = RichTextField()
-
     class Meta:
         model = ProductExtension
         verbose_name_plural = 'extension products'
