@@ -1,15 +1,19 @@
 from django import forms
 from django.db.models import Q
 from django.utils.translation import pgettext_lazy
+from django.urls import reverse_lazy
+
 
 from saleor.product.models import Product
 from saleor.dashboard.product.forms import RichTextField
+from saleor.dashboard.forms import AjaxSelect2MultipleChoiceField
 from ..models import ProductExtension
 
 
 class ProductExtensionForm(forms.ModelForm):
-    product = forms.ModelChoiceField(
-        queryset=Product.objects.all())
+    product = AjaxSelect2MultipleChoiceField(
+        queryset=Product.objects.all(),
+        fetch_data_url=reverse_lazy('dashboard:ajax-products'), required=False)
 
     class Meta:
         model = ProductExtension

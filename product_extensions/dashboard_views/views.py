@@ -22,7 +22,7 @@ def product_extension_list(request):
     product_extension_filter = ProductExtensionFilter(
         request.GET, queryset=product_extensions)
     product_extensions = get_paginator_items(
-        product_extensions, settings.DASHBOARD_PAGINATE_BY, request.GET.get('page'))
+        product_extension_filter.qs, settings.DASHBOARD_PAGINATE_BY, request.GET.get('page'))
     # Call this so that cleaned_data exists on the filter_set
     product_extension_filter.form.is_valid()
     ctx = {
