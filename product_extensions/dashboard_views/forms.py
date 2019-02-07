@@ -6,14 +6,14 @@ from django.urls import reverse_lazy
 
 from saleor.product.models import Product
 from saleor.dashboard.product.forms import RichTextField
-from saleor.dashboard.forms import AjaxSelect2MultipleChoiceField
+from saleor.dashboard.forms import AjaxSelect2ChoiceField
 from ..models import ProductExtension
 
 
 class ProductExtensionForm(forms.ModelForm):
-    product = AjaxSelect2MultipleChoiceField(
+    product = AjaxSelect2ChoiceField(
         queryset=Product.objects.all(),
-        fetch_data_url=reverse_lazy('dashboard:ajax-products'), required=False)
+        fetch_data_url=reverse_lazy('dashboard:ajax-products'))
 
     class Meta:
         model = ProductExtension
@@ -36,3 +36,6 @@ class ProductExtensionForm(forms.ModelForm):
         else:
             self.fields['product'].queryset = self.fields[
                 'product'].queryset.filter(extension__isnull=True)
+
+        if self.instance.product:
+            self.fields['product'].set_initial(self.instance.product)
